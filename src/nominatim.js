@@ -9,6 +9,7 @@ import { MapQuest } from './providers/mapquest';
 import { Pelias } from './providers/pelias';
 import { Bing } from './providers/bing';
 import { OpenCage } from './providers/opencage';
+import { ESRIWorld } from './providers/esri'
 import { VARS, TARGET_TYPE, PROVIDERS, EVENT_TYPE } from 'konstants';
 import { randomId, flyTo } from 'helpers/mix';
 import { json } from 'helpers/ajax';
@@ -60,6 +61,7 @@ export class Nominatim {
     this.Pelias = new Pelias();
     this.Bing = new Bing();
     this.OpenCage = new OpenCage();
+    this.ESRIWorld = new ESRIWorld();
   }
 
   setListeners() {
@@ -170,6 +172,10 @@ export class Nominatim {
         case PROVIDERS.OPENCAGE:
           res_ = res.results.length ?
             this.OpenCage.handleResponse(res.results) : undefined;
+          break;
+        case PROVIDERS.ESRIWORLD:
+            console.log(res)
+            this.ESRIWorld.handleResponse(res, (callback) => res_ = callback)
           break;
         default:
           res_ = this.options.provider.handleResponse(res);
@@ -313,6 +319,9 @@ export class Nominatim {
       case PROVIDERS.OPENCAGE:
         provider = this.OpenCage.getParameters(options);
         break;
+      case PROVIDERS.ESRIWORLD:
+        provider = this.ESRIWorld.getParameters(options);
+        break;  
       default:
         provider = options.provider.getParameters(options);
         break;
