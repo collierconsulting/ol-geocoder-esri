@@ -2,7 +2,7 @@
  * ol-geocoder - v3.1.0
  * A geocoder extension for OpenLayers.
  * https://github.com/jonataswalker/ol-geocoder
- * Built: Fri Apr 06 2018 09:18:51 GMT-0300 (-03)
+ * Built: Tue Jun 05 2018 16:05:19 GMT-0400 (Eastern Daylight Time)
  */
 
 (function (global, factory) {
@@ -69,7 +69,8 @@
     PHOTON: 'photon',
     BING: 'bing',
     OPENCAGE: 'opencage',
-    PELIAS: 'pelias'
+    PELIAS: 'pelias',
+    ESRIWORLD: 'esri'
   };
 
   const DEFAULT_OPTIONS = {
@@ -707,6 +708,87 @@
     }); });
   };
 
+  /**
+   * @class OpenStreet
+   */
+  var ESRIWorld = function ESRIWorld() {
+
+    this.settings = {
+      url: {
+        suggest: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/suggest',
+        find: 'https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates',
+      },
+      params: {
+        text: '',
+        f: 'json',
+        location: null,
+        searchExtent: null,
+        category: '',
+        maxSuggestions: 3,
+        countryCode: 'USA',
+      }
+    };
+  };
+
+  ESRIWorld.prototype.getData = function getData (suggestions) {
+      var this$1 = this;
+
+    const places = Promise.all(
+      suggestions.map(
+        function (place) { return fetch(
+            ((this$1.settings.url.find) + "?singleLine=\"\n            " + (place.text) + "\"&magicKey=\"\n            " + (place.magicKey) + "\"&f=json")
+          ); }).json()
+    );
+    return places;
+  };
+
+  ESRIWorld.prototype.getParameters = function getParameters (opt) {
+    return {
+      url: this.settings.url.suggest,
+      params: {
+        text: opt.query,
+        f: this.settings.params.f,
+        maxSuggestions: opt.maxSuggestions
+          || this.settings.params.maxSuggestions,
+        countryCode: opt.countryCode
+          || this.settings.params.countryCode,
+      }
+    };
+  };
+
+  ESRIWorld.prototype.handleResponse = function handleResponse (results, callback) {
+    if (results && results.suggestions && results.suggestions.length) {
+      this.getData(results.suggestions).then(function (data) {
+        const result = data.map(function (res) {
+          return {
+            lon: res.candidates[0].location.x,
+            lat: res.candidates[0].location.y,
+            address: {
+              name: res.candidates[0].address
+            },
+            bbox: null
+          };
+        });
+        // console.log(data);
+        callback(result);
+      });
+
+      // callback(results.suggestions.map(feature => {
+      // return {
+      //   lon: 0,
+      //   lat: 1,
+      //   address: {
+      //     name: 'hi'
+      //   },
+      //   bbox: [1, 2, 3, 4]
+      // };
+      // })
+      // );
+    } else {
+      return;
+    }
+  };
+
   function json(obj) {
     return new Promise(function (resolve, reject) {
       const url = encodeUrlXhr(obj.url, obj.data);
@@ -812,6 +894,7 @@
     this.Pelias = new Pelias();
     this.Bing = new Bing();
     this.OpenCage = new OpenCage();
+    this.ESRIWorld = new ESRIWorld();
   };
 
   Nominatim.prototype.setListeners = function setListeners () {
@@ -926,6 +1009,9 @@
         case PROVIDERS.OPENCAGE:
           res_ = res.results.length ?
             this$1.OpenCage.handleResponse(res.results) : undefined;
+          break;
+        case PROVIDERS.ESRIWORLD:
+          res_ = this$1.ESRIWorld.handleResponse(res, function (callback) { return callback; });
           break;
         default:
           res_ = this$1.options.provider.handleResponse(res);
@@ -1070,6 +1156,9 @@
         break;
       case PROVIDERS.OPENCAGE:
         provider = this.OpenCage.getParameters(options);
+        break;
+      case PROVIDERS.ESRIWORLD:
+        provider = this.ESRIWorld.getParameters(options);
         break;
       default:
         provider = options.provider.getParameters(options);
