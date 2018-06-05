@@ -1,3 +1,5 @@
+## This fork adds the [ESRI World Geocoding service](https://developers.arcgis.com/rest/geocode/api-reference/overview-world-geocoding-service.htm) as a provider.
+
 # OpenLayers Control Geocoder
 <p align="center">
   <a href="https://travis-ci.org/jonataswalker/ol-geocoder">
