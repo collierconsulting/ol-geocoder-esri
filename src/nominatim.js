@@ -174,13 +174,28 @@ export class Nominatim {
             this.OpenCage.handleResponse(res.results) : undefined;
           break;
         case PROVIDERS.ESRIWORLD:
-          res_ = this.ESRIWorld.handleResponse(res, (callback) => callback);
+          this.ESRIWorld.handleResponse(res, (callback) => {
+            res_ = callback.map((r) => {
+              return {
+                lon: r.candidates[0].location.x,
+                lat: r.candidates[0].location.y,
+                address: {
+                  name: r.candidates[0].address
+                },
+                bbox: null
+              };
+            });
+            if (res_) {
+              this.createList(res_);
+              this.listenMapClick();
+            }
+          });
           break;
         default:
           res_ = this.options.provider.handleResponse(res);
           break;
       }
-      if (res_) {
+      if (res_ && this.options.provider !== PROVIDERS.ESRIWORLD) {
         this.createList(res_);
         this.listenMapClick();
       }

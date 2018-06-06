@@ -18,8 +18,8 @@ export class ESRIWorld {
         location: null,
         searchExtent: null,
         category: '',
-        maxSuggestions: 3,
-        countryCode: 'USA',
+        maxSuggestions: 4,
+        countryCode: '',
       }
     };
   }
@@ -32,7 +32,8 @@ export class ESRIWorld {
             `${this.settings.url.find}?singleLine="
             ${place.text}"&magicKey="
             ${place.magicKey}"&f=json`
-          )).json()
+          ).then(res => res.json())
+      )
     );
     return places;
   }
@@ -54,31 +55,8 @@ export class ESRIWorld {
   handleResponse(results, callback) {
     if (results && results.suggestions && results.suggestions.length) {
       this.getData(results.suggestions).then(data => {
-        const result = data.map((res) => {
-          return {
-            lon: res.candidates[0].location.x,
-            lat: res.candidates[0].location.y,
-            address: {
-              name: res.candidates[0].address
-            },
-            bbox: null
-          };
-        });
-        // console.log(data);
-        callback(result);
+        callback(data);
       });
-
-      // callback(results.suggestions.map(feature => {
-      //   return {
-      //     lon: 0,
-      //     lat: 1,
-      //     address: {
-      //       name: 'hi'
-      //     },
-      //     bbox: [1, 2, 3, 4]
-      //   };
-      // })
-      // );
     } else {
       return;
     }

@@ -1,26 +1,6 @@
 ## This fork adds the [ESRI World Geocoding service](https://developers.arcgis.com/rest/geocode/api-reference/overview-world-geocoding-service.htm) as a provider.
 
 # OpenLayers Control Geocoder
-<p align="center">
-  <a href="https://travis-ci.org/jonataswalker/ol-geocoder">
-    <img src="https://travis-ci.org/jonataswalker/ol-geocoder.svg?branch=master" alt="build status">
-  </a>
-  <a href="https://www.npmjs.com/package/ol-geocoder">
-    <img src="https://img.shields.io/npm/v/ol-geocoder.svg"
-      alt="npm version">
-  </a>
-  <a href="https://github.com/jonataswalker/ol-geocoder/blob/master/LICENSE">
-    <img src="https://img.shields.io/npm/l/ol-geocoder.svg"
-      alt="license">
-  </a>
-  <a href="https://david-dm.org/jonataswalker/ol-geocoder">
-    <img src="https://david-dm.org/jonataswalker/ol-geocoder/status.svg"
-      alt="dependency status">
-  </a>
-  <a href="https://david-dm.org/jonataswalker/ol-geocoder">
-    <img src="https://david-dm.org/jonataswalker/ol-geocoder/dev-status.svg" alt="devDependency status">
-  </a>
-</p>
 
 A geocoder extension for [OpenLayers](http://openlayers.org/). **Requires** OpenLayers **v3.11.0** or higher.
 
@@ -63,21 +43,8 @@ Custom providers must implement the following methods:
 ##### NPM
 `npm install ol-geocoder`
 
-##### CDN Hosted - [jsDelivr](https://www.jsdelivr.com/package/npm/ol-geocoder)
-Load CSS and Javascript:
-```HTML
-<link href="https://cdn.jsdelivr.net/npm/ol-geocoder@latest/dist/ol-geocoder.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/ol-geocoder"></script>
-```
-
-##### CDN Hosted - UNPKG
-Load CSS and Javascript:
-```HTML
-<link href="https://unpkg.com/ol-geocoder/dist/ol-geocoder.min.css" rel="stylesheet">
-<script src="https://unpkg.com/ol-geocoder"></script>
-```
 ##### Self hosted
-Download [latest release](https://github.com/jonataswalker/ol-geocoder/releases/latest) and (obviously) load CSS and Javascript.
+Download [latest release](https://github.com/josh-channin/ol-geocoder/releases/latest) and (obviously) load CSS and Javascript.
 
 ##### Instantiate with some options and add the Control
 ```javascript

@@ -2,7 +2,7 @@
  * ol-geocoder - v3.1.0
  * A geocoder extension for OpenLayers.
  * https://github.com/jonataswalker/ol-geocoder
- * Built: Tue Jun 05 2018 16:05:19 GMT-0400 (Eastern Daylight Time)
+ * Built: Wed Jun 06 2018 10:42:25 GMT-0400 (Eastern Daylight Time)
  */
 
 (function (global, factory) {
@@ -724,8 +724,8 @@
         location: null,
         searchExtent: null,
         category: '',
-        maxSuggestions: 3,
-        countryCode: 'USA',
+        maxSuggestions: 4,
+        countryCode: '',
       }
     };
   };
@@ -737,7 +737,8 @@
       suggestions.map(
         function (place) { return fetch(
             ((this$1.settings.url.find) + "?singleLine=\"\n            " + (place.text) + "\"&magicKey=\"\n            " + (place.magicKey) + "\"&f=json")
-          ); }).json()
+          ).then(function (res) { return res.json(); }); }
+      )
     );
     return places;
   };
@@ -759,31 +760,8 @@
   ESRIWorld.prototype.handleResponse = function handleResponse (results, callback) {
     if (results && results.suggestions && results.suggestions.length) {
       this.getData(results.suggestions).then(function (data) {
-        const result = data.map(function (res) {
-          return {
-            lon: res.candidates[0].location.x,
-            lat: res.candidates[0].location.y,
-            address: {
-              name: res.candidates[0].address
-            },
-            bbox: null
-          };
-        });
-        // console.log(data);
-        callback(result);
+        callback(data);
       });
-
-      // callback(results.suggestions.map(feature => {
-      // return {
-      //   lon: 0,
-      //   lat: 1,
-      //   address: {
-      //     name: 'hi'
-      //   },
-      //   bbox: [1, 2, 3, 4]
-      // };
-      // })
-      // );
     } else {
       return;
     }
@@ -1011,13 +989,28 @@
             this$1.OpenCage.handleResponse(res.results) : undefined;
           break;
         case PROVIDERS.ESRIWORLD:
-          res_ = this$1.ESRIWorld.handleResponse(res, function (callback) { return callback; });
+          this$1.ESRIWorld.handleResponse(res, function (callback) {
+            res_ = callback.map(function (r) {
+              return {
+                lon: r.candidates[0].location.x,
+                lat: r.candidates[0].location.y,
+                address: {
+                  name: r.candidates[0].address
+                },
+                bbox: null
+              };
+            });
+            if (res_) {
+              this$1.createList(res_);
+              this$1.listenMapClick();
+            }
+          });
           break;
         default:
           res_ = this$1.options.provider.handleResponse(res);
           break;
       }
-      if (res_) {
+      if (res_ && this$1.options.provider !== PROVIDERS.ESRIWORLD) {
         this$1.createList(res_);
         this$1.listenMapClick();
       }
