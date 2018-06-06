@@ -1,17 +1,17 @@
 {
   "name": "ol-geocoder",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "description": "A geocoder extension for OpenLayers.",
-  "author": "Jonatas Walker",
-  "homepage": "https://github.com/jonataswalker/ol-geocoder",
+  "author": "Jonatas Walker + Josh Channin",
+  "homepage": "https://github.com/josh-channin/ol-geocoder",
   "license": "MIT",
   "main": "dist/ol-geocoder.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/jonataswalker/ol-geocoder.git"
+    "url": "git://github.com/josh-channin/ol-geocoder.git"
   },
   "bugs": {
-    "url": "https://github.com/jonataswalker/ol-geocoder/issues"
+    "url": "https://github.com/josh-channin/ol-geocoder/issues"
   },
   "files": [
     "dist/"
@@ -19,7 +19,8 @@
   "keywords": [
     "geocoder",
     "openlayers",
-    "nominatim"
+    "nominatim",
+    "ESRI"
   ],
   "scripts": {
     "dev": "run-s lint build:css rollup:dev",
