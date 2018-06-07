@@ -1,8 +1,8 @@
-## This fork adds the [ESRI World Geocoding service](https://developers.arcgis.com/rest/geocode/api-reference/overview-world-geocoding-service.htm) as a provider.
-
 # OpenLayers Control Geocoder
 
 A geocoder extension for [OpenLayers](http://openlayers.org/). **Requires** OpenLayers **v3.11.0** or higher.
+
+ This fork adds the [ESRI World Geocoding service](https://developers.arcgis.com/rest/geocode/api-reference/overview-world-geocoding-service.htm) as a provider.
 
 ![geocoder anim](https://raw.githubusercontent.com/jonataswalker/ol-geocoder/screenshots/images/anim.gif)
 
