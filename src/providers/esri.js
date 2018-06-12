@@ -46,8 +46,6 @@ export class ESRIWorld {
         f: this.settings.params.f,
         maxSuggestions: opt.maxSuggestions
           || this.settings.params.maxSuggestions,
-        countryCode: opt.countryCode
-          || this.settings.params.countryCode,
       }
     };
   }

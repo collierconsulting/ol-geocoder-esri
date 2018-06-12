@@ -1,8 +1,8 @@
 /*!
- * ol-geocoder - v3.1.0
+ * ol-geocoder-esri - v3.2.0
  * A geocoder extension for OpenLayers.
- * https://github.com/jonataswalker/ol-geocoder
- * Built: Wed Jun 06 2018 10:42:25 GMT-0400 (Eastern Daylight Time)
+ * https://github.com/josh-channin/ol-geocoder
+ * Built: Tue Jun 12 2018 09:47:11 GMT-0400 (Eastern Daylight Time)
  */
 
 (function (global, factory) {
@@ -751,8 +751,6 @@
         f: this.settings.params.f,
         maxSuggestions: opt.maxSuggestions
           || this.settings.params.maxSuggestions,
-        countryCode: opt.countryCode
-          || this.settings.params.countryCode,
       }
     };
   };
@@ -1026,7 +1024,9 @@
       var this$1 = this;
 
     const ul = this.els.result;
-
+    /** have to clear results each
+     * time in case request takes too long to repsond */
+    removeAllChildren(this.els.result);
     response.forEach(function (row) {
       let addressHtml;
 

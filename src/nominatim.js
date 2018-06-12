@@ -209,7 +209,9 @@ export class Nominatim {
 
   createList(response) {
     const ul = this.els.result;
-
+    /** have to clear results each
+     * time in case request takes too long to repsond */
+    removeAllChildren(this.els.result);
     response.forEach(row => {
       let addressHtml;
 
